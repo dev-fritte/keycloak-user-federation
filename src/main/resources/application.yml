@@ -1,15 +1,36 @@
 spring:
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/Alibou
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:9091/realms/default
+#          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+      client:
+        provider:
+          spring-keycloak-client:
+            issuer-uri: http://localhost:9091/realms/default
+        registration:
+          spring-keycloak-client:
+            client-id: spring-keycloak-client
+            client-secret: XSQaYer8gLD49t4Ktd7h4U6vuXnSz9Bc
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: http://localhost:8081/login/oauth2/code/spring-keycloak-client
 server:
   port: 8081
+
 
 jwt:
   auth:
     converter:
       resource-id: alibou-rest-api
       principle-attribute: preferred_username
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
